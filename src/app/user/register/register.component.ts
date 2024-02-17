@@ -3,18 +3,21 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { compileNgModule } from '@angular/compiler';
 import IUser from 'src/app/models/user.model';
+import { RegisterValidators } from '../validators/register-validators'
+import { EmailTaken } from '../validators/email-taken';
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
-  constructor(private auth: AuthService) {
+  constructor(private auth: AuthService, private emailTaken: EmailTaken) {
 
   }
   inSubmission = false;
   name = new FormControl('', [Validators.required, Validators.minLength(3)]);
-  email = new FormControl('', [Validators.email]);
+  email = new FormControl('', [Validators.email], [this.emailTaken.validate]);
   age = new FormControl<number | null>(null, [Validators.min(18)]);
   password = new FormControl('', [
     Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm),
@@ -31,7 +34,7 @@ export class RegisterComponent {
     password: this.password,
     confirm_password: this.confirm_password,
     phoneNumber: this.phoneNumber,
-  });
+  }, [RegisterValidators.match('password', 'confirm_password')]);
 
   async register() {
     this.showAlert = true;
@@ -49,6 +52,5 @@ export class RegisterComponent {
     }
     this.alertMsg = "Success!"
     this.alertColor = "green"
-
   }
 }
