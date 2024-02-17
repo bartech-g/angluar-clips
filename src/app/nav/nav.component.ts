@@ -3,6 +3,7 @@ import { ModalService } from '../services/modal.service';
 import { AuthService } from '../services/auth.service';
 import { Subscriber } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+// import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -11,7 +12,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 })
 export class NavComponent {
   // isAuthenticated = false;
-  constructor(public modal: ModalService, public auth: AuthService, private afAuth: AngularFireAuth) {
+  constructor(public modal: ModalService, public auth: AuthService, ) {
     // this.auth.isAuthenticated$.subscribe(status => {
     //   this.isAuthenticated = status
     // })
@@ -20,8 +21,9 @@ export class NavComponent {
     $event.preventDefault();
     this.modal.toggleModal('auth');
   }
-  async logout($event: Event) {
-    $event.preventDefault()
-    await this.afAuth.signOut()
-  }
+  // async logout($event: Event) {
+  //   $event.preventDefault()
+  //   await this.afAuth.signOut()
+  //   await this.router.navigateByUrl('/')
+  // }
 }
